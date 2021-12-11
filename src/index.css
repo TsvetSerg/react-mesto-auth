@@ -44,3 +44,9 @@
 @import url(../src/blocks/profile/__button/profile__button.css);
 @import url(../src/blocks/profile/__wrapper/profile__wrapper.css);
 @import url(../src/blocks/element/__wrapper/element__wrapper.css);
+@import url(../src/blocks/login/login.css);
+@import url(../src/blocks/login/__button/login__button.css);
+@import url(../src/blocks/login/__input/login__input.css);
+@import url(../src/blocks/login/__title/login__title.css);
+@import url(../src/blocks/login/__form/login__form.css);
+@import url(../src/blocks/login/__text/login__text.css);
