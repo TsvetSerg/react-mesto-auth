@@ -50,3 +50,5 @@
 @import url(../src/blocks/login/__title/login__title.css);
 @import url(../src/blocks/login/__form/login__form.css);
 @import url(../src/blocks/login/__text/login__text.css);
+@import url(../src/blocks/popup/__image-confirmation/popup__image-confirmation.css);
+@import url(../src/blocks/popup/__title/__title_сonfirmation/popup__title_сonfirmation.css);

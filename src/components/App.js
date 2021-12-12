@@ -12,8 +12,10 @@ import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 import Login from './Login'
 import Register from './Register';
-import { Route, Switch, Redirect  } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory, BrowserRouter } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
+import * as Auth from './utils/Auth';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
 
@@ -25,8 +27,13 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [currentCard, setCurrentCard] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [infoUser, setInfoUser] = React.useState('')
+  const [confirmation, setConfirmation] = React.useState(false)
+  const [error, setError] = React.useState(true)
+  const history = useHistory();
 
   React.useEffect(() => {
+    handelTokenCheck();
     Promise.all([apiClass.getInfoUser(), apiClass.getInitialCards()])
       .then(([info, cards]) => {
         setCurrentUser(info)
@@ -37,6 +44,29 @@ function App() {
       })
     }, [])
 
+  function handelConfirmation() {
+    setConfirmation(true)
+  }
+
+
+
+  function handelTokenCheck() {         // Проверяем и сохроняем токен
+    const token = localStorage.getItem('token');
+    if (token) {
+      Auth.getToken(token)
+      .then((getInfo) => {
+        setLoggedIn(true);
+        history.push('/')
+        return setInfoUser(getInfo)
+      })
+    }
+  }
+
+  function handelTokenRemove() {        // Функция выхода из аккаунта
+    localStorage.removeItem('token');
+    setLoggedIn(false)
+    history.push('/')
+  }
 
   function handelLogin() {
     setLoggedIn(true)
@@ -123,26 +153,43 @@ function App() {
     setIsEditProfilePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
     setSelectedCard({name: '', link: ''})
+    setConfirmation(false)
+    setError({image: '', title: ''})
   }
 
   function handleCardClick(item) {
     setSelectedCard(item)
   }
 
+  function handelErroe() {
+    setError(false)
+  }
 
   return (
 
   <div className="page">
 
-  <Header />
+  <Header
+    handelTokenRemove = {handelTokenRemove}
+    email = {infoUser.email}
+    loggedIn = {loggedIn}
+  />
+
+  <InfoTooltip
+    isOpen = {confirmation}
+    onClose = {closeAllPopups}
+    errorMassage = {error}
+  />
 
   <Switch>
 
   <ProtectedRoute
       exact path = "/"
-      loggedIn = {handelLogin}
+      loggedIn = {loggedIn}
       Component = {(
       <CurrentUserContext.Provider value={currentUser}>
+
+
 
       <Main
         onAddPlace  = {openAddPopup}
@@ -187,8 +234,13 @@ function App() {
     </Route>
 
     <Route path="/sign-up">
-      <Register />.
+      <Register
+        handelConfirmation = {handelConfirmation}
+        handelErroe = {handelErroe}
+      />.
     </Route>
+
+
   </Switch>
 
   </div>

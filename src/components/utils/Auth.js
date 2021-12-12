@@ -13,17 +13,11 @@ export const register = ({password, email}) => {
     "email": email
   })
 })
-  .then((response) => {
-    try {
-      if (response.status === 201) {
-        return response.json()
-      }
-    } catch(e) {
-      return (e)
-    }
-  })
-  .then((res) => {
-    return res;
+.then((res) => {
+  return res.json()
+})
+  .then((data) => {
+    return data;
   })
   .catch((err) => {
     console.log(err);
@@ -37,17 +31,42 @@ export const authorize = ({identifier, password}) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      "password": identifier,
-      "email": password
+      "password": password,
+      "email": identifier
     })
   })
+  .then((res) => {
+    return res.json()
+  })
   .then((data) => {
-    if (data.jwt) {
-      localStorage.setItem('jwt', data.jwt);
-      return data;
+    if (data) {
+      localStorage.setItem('token', data.token);
     }
+    return data;
   })
   .catch((err) => {
     console.log(err);
   })
 }
+
+
+export const getToken = (token) => {
+  return fetch(`${baseUrl}/users/me`, {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization" : `Bearer ${token}`
+    }
+  })
+  .then((res) => {
+    return res.json();
+  })
+  .then(({data}) => {
+    return (data)
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+}
+
+

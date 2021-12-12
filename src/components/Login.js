@@ -5,33 +5,24 @@ import {  withRouter } from 'react-router-dom'
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      username: '',
-      password: ''
-    }
-    this.handleChange = this.handleChange.bind(this);
+    this.username = React.createRef();
+    this.password = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(e) {
-    const {name, value} = e.target;
-    this.setState({
-      [name]: value
-    })
-  }
 
   handleSubmit(e) {
     e.preventDefault()
-    if (!this.state.username || !this.state.password) {
+    if (!this.username || !this.password) {
       return;
     }
-    Auth.authorize(this.state.username, this.state.password)
-    .then((data) => {
-      if (data.jwt) {
-        this.setState({username: '', password: ''}, () => {
-          this.props.handelLogin();
-          this.props.history.push('/')
-        })
+    Auth.authorize({
+      identifier: this.username.current.value,
+      password: this.password.current.value
+    }).then((data) => {
+      if (data.token) {
+        this.props.handelLogin();
+        this.props.history.push('/');
       }
     })
     .catch((err) => {
@@ -44,8 +35,8 @@ class Login extends React.Component {
       <div className="login">
         <h2 className="login__title">Вход</h2>
         <form className="login__form" onSubmit={this.handleSubmit}>
-          <input onChange={this.handleChange} value={this.state.username} id="username" name="username" className="login__input" type="text" placeholder="Email" required />
-          <input onChange={this.handleChange} value={this.state.password} id="password" name="password" className="login__input" type="password" placeholder="Пароль" required />
+          <input ref={this.username} id="username" name="username" className="login__input" type="text" placeholder="Email" required />
+          <input ref={this.password} id="password" name="password" className="login__input" type="password" placeholder="Пароль" required />
           <button className="login__button" type="submit">Войти</button>
         </form>
       </div>

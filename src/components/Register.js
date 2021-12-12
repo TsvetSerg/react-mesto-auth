@@ -19,9 +19,13 @@ class Register extends React.Component {
       email: this.email.current.value
     })
     .then((res) => {
-      if (res) {
-        this.props.history.push('/sign-in');
+      if (res.status === 400) {
+        this.props.handelConfirmation();
+        this.props.handelErroe()
       }
+    })
+    .catch((err) => {
+      console.log(err);
     })
   }
 
