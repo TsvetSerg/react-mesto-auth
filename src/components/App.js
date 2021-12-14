@@ -29,7 +29,7 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [infoUser, setInfoUser] = React.useState('')
   const [confirmation, setConfirmation] = React.useState(false)
-  const [error, setError] = React.useState(true)
+  const [error, setError] = React.useState(false)
   const history = useHistory();
 
   React.useEffect(() => {
@@ -44,11 +44,11 @@ function App() {
       })
     }, [])
 
+
+
   function handelConfirmation() {
     setConfirmation(true)
   }
-
-
 
   function handelTokenCheck() {         // Проверяем и сохроняем токен
     const token = localStorage.getItem('token');
@@ -154,7 +154,7 @@ function App() {
     setIsEditAvatarPopupOpen(false)
     setSelectedCard({name: '', link: ''})
     setConfirmation(false)
-    setError({image: '', title: ''})
+    // setError({image: '', title: ''})
   }
 
   function handleCardClick(item) {
@@ -162,7 +162,7 @@ function App() {
   }
 
   function handelErroe() {
-    setError(false)
+    setError(true)
   }
 
   return (
@@ -230,6 +230,7 @@ function App() {
     <Route path="/sign-in">
       <Login
       handelLogin = {handelLogin}
+      handelTokenCheck = {handelTokenCheck}
       />
     </Route>
 

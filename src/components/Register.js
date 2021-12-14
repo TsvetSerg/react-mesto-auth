@@ -9,6 +9,9 @@ class Register extends React.Component {
     this.email = React.createRef()
     this.password = React.createRef()
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      statusCode: null
+    }
   }
 
 
@@ -18,14 +21,12 @@ class Register extends React.Component {
       password: this.password.current.value,
       email: this.email.current.value
     })
-    .then((res) => {
-      if (res.status === 400) {
-        this.props.handelConfirmation();
-        this.props.handelErroe()
-      }
+    .then(() => {
+      this.props.handelConfirmation();
+      this.props.handelErroe()
     })
     .catch((err) => {
-      console.log(err);
+      console.log('err');
     })
   }
 
@@ -44,3 +45,11 @@ class Register extends React.Component {
   }
 }
 export default withRouter(Register);
+        // this.props.handelConfirmation();
+        // this.props.handelErroe()
+
+        // if (res.ok) {
+        //   return console.log('ok');
+        // } else {
+        //   return console.log('not');
+        // }

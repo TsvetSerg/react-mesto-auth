@@ -23,6 +23,7 @@ class Login extends React.Component {
       if (data.token) {
         this.props.handelLogin();
         this.props.history.push('/');
+        this.props.handelTokenCheck(); // проверяем токен при монтировании
       }
     })
     .catch((err) => {
