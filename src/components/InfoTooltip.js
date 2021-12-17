@@ -13,7 +13,7 @@ class InfoTooltip extends React.Component {
     return (
       <div className={`popup ${this.props.isOpen ? 'popup_opened' : ''}`} >
       <div className="popup__container">
-        <img className="popup__image-confirmation" src={ok} alt="" />
+        <img className="popup__image-confirmation" src={this.props.errorMassage ? ok : err} alt={this.props.errorMassage ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'} />
         <h2 className="popup__title_сonfirmation">{this.props.errorMassage ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}</h2>
 
         <button type="button" className="popup__close-button" onClick={this.props.onClose} >

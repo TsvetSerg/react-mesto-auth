@@ -25,8 +25,9 @@ class Register extends React.Component {
       this.props.handelConfirmation();
       this.props.handelErroe()
     })
-    .catch((err) => {
-      console.log('err');
+    .catch(() => {
+      this.props.handelConfirmation();
+      this.props.handelErroeMassage()
     })
   }
 
@@ -39,17 +40,9 @@ class Register extends React.Component {
           <input id="password" name="password" ref={this.password} className="login__input" type="password" placeholder="Пароль" required />
           <button className="login__button" type="submit">Зарегистрироваться</button>
         </form>
-        <h3 className="login__text">Уже зарегистрированы? <Link to="sign-in">Войти</Link></h3>
+        <h3 className="login__text">Уже зарегистрированы? <Link className='login__link' to="sign-in">Войти</Link></h3>
       </div>
     )
   }
 }
 export default withRouter(Register);
-        // this.props.handelConfirmation();
-        // this.props.handelErroe()
-
-        // if (res.ok) {
-        //   return console.log('ok');
-        // } else {
-        //   return console.log('not');
-        // }

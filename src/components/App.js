@@ -164,6 +164,9 @@ function App() {
   function handelErroe() {
     setError(true)
   }
+  function handelErroeMassage() {
+    setError(false)
+  }
 
   return (
 
@@ -238,6 +241,7 @@ function App() {
       <Register
         handelConfirmation = {handelConfirmation}
         handelErroe = {handelErroe}
+        handelErroeMassage = {handelErroeMassage}
       />.
     </Route>
 

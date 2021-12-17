@@ -25,8 +25,10 @@ class Header extends React.Component {
     return (
       <header className="header">
       <img className="header__logo" src={logoImage} alt="Лого" />
-      <p>{this.props.loggedIn ? this.props.email : ''}</p>
-      <button onClick={this.handleSubmit}>{this.props.loggedIn ? 'Выйти' : 'Регистрация'}</button>
+      <div className="header_layer">
+        <p className="header__information">{this.props.loggedIn ? this.props.email : ''}</p>
+        <button className="header__botton" onClick={this.handleSubmit}>{this.props.loggedIn ? 'Выйти' : 'Регистрация'}</button>
+      </div>
     </header>
     )
   }

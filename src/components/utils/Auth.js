@@ -22,9 +22,9 @@ export const register = ({password, email}) => {
   .then((data) => {
     return data;
   })
-  .catch((err) => {
-    console.log(err);
-  })
+  // .catch((err) => {
+  //   console.log(err);
+  // })
 }
 
 export const authorize = ({identifier, password}) => {
