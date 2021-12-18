@@ -2,6 +2,13 @@ import React from 'react';
 
 export const baseUrl = 'https://auth.nomoreparties.co';
 
+ function checked(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(res.status)
+}
+
 export const register = ({password, email}) => {
   return fetch(`${baseUrl}/signup`,{
   method: 'POST',
@@ -14,17 +21,11 @@ export const register = ({password, email}) => {
   })
 })
 .then((res) => {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(res.status)
+  checked(res)
 })
   .then((data) => {
     return data;
   })
-  // .catch((err) => {
-  //   console.log(err);
-  // })
 }
 
 export const authorize = ({identifier, password}) => {
@@ -47,9 +48,6 @@ export const authorize = ({identifier, password}) => {
     }
     return data;
   })
-  .catch((err) => {
-    console.log(err);
-  })
 }
 
 
@@ -66,9 +64,6 @@ export const getToken = (token) => {
   })
   .then(({data}) => {
     return (data)
-  })
-  .catch((err) => {
-    console.log(err);
   })
 }
 

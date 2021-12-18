@@ -14,7 +14,7 @@ import Login from './Login'
 import Register from './Register';
 import { Route, Switch, Redirect, useHistory, BrowserRouter } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
-import * as Auth from './utils/Auth';
+import * as auth from './utils/auth';
 import InfoTooltip from './InfoTooltip';
 
 function App() {
@@ -28,8 +28,9 @@ function App() {
   const [currentCard, setCurrentCard] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [infoUser, setInfoUser] = React.useState('')
-  const [confirmation, setConfirmation] = React.useState(false)
   const [error, setError] = React.useState(false)
+  const [confirmation, setConfirmation] = React.useState(false)
+
   const history = useHistory();
 
   React.useEffect(() => {
@@ -53,11 +54,14 @@ function App() {
   function handelTokenCheck() {         // Проверяем и сохроняем токен
     const token = localStorage.getItem('token');
     if (token) {
-      Auth.getToken(token)
+      auth.getToken(token)
       .then((getInfo) => {
         setLoggedIn(true);
         history.push('/')
         return setInfoUser(getInfo)
+      })
+      .catch((err) => {
+        console.log(err);
       })
     }
   }
@@ -139,6 +143,38 @@ function App() {
     })
   }
 
+  function hendleLoginAuth(username, password) {
+    auth.authorize({
+      identifier: username,
+      password: password
+    }).then((data) => {
+      if (data.token) {
+        handelLogin();
+        history.push('/');
+        handelTokenCheck(); // проверяем токен при монтировании
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  function handleRegistr(password, email) {
+    auth.register({
+      password: password,
+      email: email
+    })
+    .then(() => {
+      setConfirmation(true);
+      setError(true);
+    })
+    .catch(() => {
+      console.log('okk');   // сюда код даже не доходит
+      setConfirmation(true);
+      handelErroeMassage()
+    })
+  }
+
   function openAddPopup() {
     setIsAddPlacePopupOpen(true)
   }
@@ -161,9 +197,6 @@ function App() {
     setSelectedCard(item)
   }
 
-  function handelErroe() {
-    setError(true)
-  }
   function handelErroeMassage() {
     setError(false)
   }
@@ -232,16 +265,13 @@ function App() {
 
     <Route path="/sign-in">
       <Login
-      handelLogin = {handelLogin}
-      handelTokenCheck = {handelTokenCheck}
+      hendleLogin = {hendleLoginAuth}
       />
     </Route>
 
     <Route path="/sign-up">
       <Register
-        handelConfirmation = {handelConfirmation}
-        handelErroe = {handelErroe}
-        handelErroeMassage = {handelErroeMassage}
+        handleRegistr = {handleRegistr}
       />.
     </Route>
 

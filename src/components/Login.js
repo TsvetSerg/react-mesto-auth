@@ -1,34 +1,34 @@
 import React from "react";
-import * as Auth from './utils/Auth';
+import * as auth from './utils/auth';
 import {  withRouter } from 'react-router-dom'
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.username = React.createRef();
-    this.password = React.createRef();
+    this.state = {
+      username: '',
+      password: ''
+    }
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.nameButton = props.nameButton;
   }
 
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value
+    const name = target.name;
+    this.setState({
+      [name]: value
+    })
+  }
 
   handleSubmit(e) {
     e.preventDefault()
-    if (!this.username || !this.password) {
+    if (!this.state.username || !this.state.password) {
       return;
     }
-    Auth.authorize({
-      identifier: this.username.current.value,
-      password: this.password.current.value
-    }).then((data) => {
-      if (data.token) {
-        this.props.handelLogin();
-        this.props.history.push('/');
-        this.props.handelTokenCheck(); // проверяем токен при монтировании
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    this.props.hendleLogin(this.state.username, this.state.password)
   }
 
   render() {
@@ -36,8 +36,8 @@ class Login extends React.Component {
       <div className="login">
         <h2 className="login__title">Вход</h2>
         <form className="login__form" onSubmit={this.handleSubmit}>
-          <input ref={this.username} id="username" name="username" className="login__input" type="text" placeholder="Email" required />
-          <input ref={this.password} id="password" name="password" className="login__input" type="password" placeholder="Пароль" required />
+          <input  id="username" name="username" value={this.state.username} onChange={this.handleChange} className="login__input" type="text" placeholder="Email" required />
+          <input id="password" name="password" value={this.state.password} onChange={this.handleChange} className="login__input" type="password" placeholder="Пароль" required />
           <button className="login__button" type="submit">Войти</button>
         </form>
       </div>
