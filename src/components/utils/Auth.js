@@ -2,8 +2,8 @@ import React from 'react';
 
 export const baseUrl = 'https://auth.nomoreparties.co';
 
- function checked(res) {
-  if (res.ok) {
+function checked(res) {         // При испоьзовании этой функции в then
+  if (res.ok) {                 // из-за облласти видимости (скорей всего), в app catch не выпоняется
     return res.json();
   }
   return Promise.reject(res.status)
@@ -21,7 +21,10 @@ export const register = ({password, email}) => {
   })
 })
 .then((res) => {
-  checked(res)
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(res.status)
 })
   .then((data) => {
     return data;

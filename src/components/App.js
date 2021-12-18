@@ -169,7 +169,7 @@ function App() {
       setError(true);
     })
     .catch(() => {
-      console.log('okk');   // сюда код даже не доходит
+      console.log('okk');   // сюда код даже не доходит при checked
       setConfirmation(true);
       handelErroeMassage()
     })
