@@ -12,7 +12,7 @@ import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 import Login from './Login'
 import Register from './Register';
-import { Route, Switch, Redirect, useHistory, BrowserRouter } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import * as auth from './utils/auth';
 import InfoTooltip from './InfoTooltip';
@@ -45,11 +45,6 @@ function App() {
       })
     }, [])
 
-
-
-  function handelConfirmation() {
-    setConfirmation(true)
-  }
 
   function handelTokenCheck() {         // Проверяем и сохроняем токен
     const token = localStorage.getItem('token');
@@ -169,9 +164,8 @@ function App() {
       setError(true);
     })
     .catch(() => {
-      console.log('okk');   // сюда код даже не доходит при checked
       setConfirmation(true);
-      handelErroeMassage()
+      setError(false);
     })
   }
 
@@ -190,15 +184,10 @@ function App() {
     setIsEditAvatarPopupOpen(false)
     setSelectedCard({name: '', link: ''})
     setConfirmation(false)
-    // setError({image: '', title: ''})
   }
 
   function handleCardClick(item) {
     setSelectedCard(item)
-  }
-
-  function handelErroeMassage() {
-    setError(false)
   }
 
   return (

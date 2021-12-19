@@ -6,7 +6,6 @@ import err from '../images/err.svg'
 class InfoTooltip extends React.Component {
   constructor(props) {
     super(props);
-
   }
 
   render() {

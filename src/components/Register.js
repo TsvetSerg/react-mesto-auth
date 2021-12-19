@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom'
-import * as auth from './utils/auth';
+
 
 
 class Register extends React.Component {
   constructor(props) {
     super(props)
-    // this.email = React.createRef()
-    // this.password = React.createRef()
     this.state = {
       email: '',
       password: ''

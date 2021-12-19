@@ -1,8 +1,7 @@
-import React from 'react';
 
 export const baseUrl = 'https://auth.nomoreparties.co';
 
-function checked(res) {         // При испоьзовании этой функции в then
+function checked(res) {
   if (res.ok) {
     return Promise.resolve(res.json());
   }
@@ -23,9 +22,6 @@ export const register = ({password, email}) => {
 .then((res) => {
   return checked(res)
 })
-  // .then((data) => {
-  //   return Promise.resolve(data);
-  // })
 }
 
 export const authorize = ({identifier, password}) => {
